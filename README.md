@@ -25,7 +25,7 @@ The private best-observed adaptation values are **exploratory held-out results**
 
 ### 1. External validation across 1–5 year horizons
 
-<img width="320" height="274" alt="external_validation_roc_curves_1_5yr" src="https://github.com/user-attachments/assets/ba85b9a2-f897-432f-9c29-0adfb934861c" />
+<img width="2100" height="1800" alt="fig1_roc_curves" src="https://github.com/user-attachments/assets/507bacfd-d7db-4d70-a8b5-89ad4458d6a2" />
 
 Original Mirai retained useful discrimination in the BC Cancer screening cohort across 1–5 year cumulative horizons. This is a static aggregate visual summary from the private retrospective analysis; patient-level predictions and ROC coordinate tables are not included.
 
