@@ -12,3 +12,9 @@ For the mapping between private analytical layers and public repository artifact
 ## Figure construction
 
 The SVG figures are reconstructed from the curated aggregate tables (and, for subgroup/imaging analyses, final aggregate summary tables from the private analysis). Patient-level ROC coordinates or predictions are not published.
+
+## Original-style static figures
+
+`figures/original_style/` contains selected static aggregate figures from the private retrospective analysis. They are included because some evidence is best understood visually: ROC curve shape, grouped calibration, subgroup forest structure, and first-exam sensitivity.
+
+These static figures do not include patient-level records, exam-level predictions, ROC coordinate tables, internal field mappings, private source data, or original scripts. They are not sufficient to reproduce the private analysis.

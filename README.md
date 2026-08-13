@@ -4,7 +4,7 @@
 
 The underlying work originated in a UBC Master of Data Science capstone with BC Cancer and was later extended independently into local recalibration, prediction-level model updating, calibration-method comparison, patient-cluster bootstrap, temporal future-period validation, first-exam sensitivity, feature-availability auditing, decision-curve analysis, and post-screen triage.
 
-> **Public boundary:** this repository includes selected aggregate context, public-safe figures, generic methodology, and synthetic runnable code. It does not include patient-level data, internal BC Cancer field mappings, private modeling datasets, original private scripts, the internal technical manual, or full private result tables.
+> **Public boundary:** this repository includes selected aggregate context, public-safe figures, generic methodology, and synthetic runnable code. It does not include patient-level data, internal BC Cancer field mappings, private modeling datasets, original private scripts, the internal technical manual, or full private result tables. See [`NOTICE.md`](NOTICE.md) for how the MIT license relates to the public reconstruction code and curated aggregate evidence.
 
 ## Project context and public reconstruction
 
@@ -25,15 +25,23 @@ The private best-observed adaptation values are **exploratory held-out results**
 
 ### 1. External validation across 1–5 year horizons
 
-![External validation AUC across horizons](evidence/figures/external_validation_auc_1_5yr.svg)
+![ROC curves across 1–5 year horizons](evidence/figures/original_style/external_validation_roc_curves_1_5yr.png)
 
-Original Mirai retained useful discrimination in the local screening cohort, with performance decreasing over longer cumulative horizons. The figure deliberately separates the capstone full-cohort context from the later held-out baseline.
+Original Mirai retained useful discrimination in the BC Cancer screening cohort across 1–5 year cumulative horizons. This is a static aggregate visual summary from the private retrospective analysis; patient-level predictions and ROC coordinate tables are not included.
+
+![External validation AUC summary](evidence/figures/external_validation_auc_1_5yr.svg)
+
+The companion summary keeps the capstone full-cohort external-validation context separate from the later held-out baseline used in the independent extension.
 
 ### 2. Calibration is a separate problem from ranking
 
+![Decile calibration across 1–5 year horizons](evidence/figures/original_style/external_validation_calibration_decile_1_5yr.png)
+
+Calibration was evaluated separately from discrimination. The original validation analysis used grouped observed-versus-predicted risk, Brier score, E/O ratio, and calibration slope/intercept to assess whether predicted probabilities were numerically reliable.
+
 ![External validation calibration context](evidence/figures/external_validation_calibration_context.svg)
 
-The project evaluates discrimination and probability reliability separately using AUC, Brier score, E/O ratio, calibration intercept/slope, and grouped observed-versus-predicted risk.
+The companion summary provides a compact horizon-level view of probability burden without publishing the private calibration table in full.
 
 ### 3. Local adaptation adds retrospective signal
 
@@ -49,9 +57,9 @@ Future-period testing reduced the larger random-split gains to a small positive 
 
 ### 5. Repeated-exam sensitivity
 
-![First-exam-only sensitivity](evidence/figures/first_exam_only_auc.svg)
+![First-exam-only sensitivity](evidence/figures/original_style/first_exam_only_auc.png)
 
-After reducing the held-out set to one earliest observed exam per patient, the tuned nonlinear model retained the main discrimination improvement pattern.
+After reducing the held-out set to one earliest observed exam per patient, the tuned nonlinear model retained the main discrimination improvement pattern. The full visual gallery also includes subgroup AUC forest plots and imaging-finding analyses; see [`docs/analysis_gallery.md`](docs/analysis_gallery.md).
 
 ## What this repository demonstrates
 
@@ -114,6 +122,7 @@ CI runs both `pytest -q` and the complete `python run_all.py` pipeline.
 ```text
 healthcare-risk-model-validation/
 ├── README.md
+├── NOTICE.md
 ├── requirements.txt
 ├── run_all.py
 ├── data/

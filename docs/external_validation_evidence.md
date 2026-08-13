@@ -46,11 +46,23 @@ This held-out baseline is the correct comparator for the independent-extension a
 
 ## 4. Discrimination and calibration are separate questions
 
+### Original-style ROC evidence
+
+![ROC curves across 1–5 year horizons](../evidence/figures/original_style/external_validation_roc_curves_1_5yr.png)
+
+This static aggregate figure preserves the original validation visual structure. It shows the horizon-specific ROC curves and patient-cluster bootstrap confidence intervals for the capstone full-cohort context. The underlying ROC coordinates and prediction-level rows are not published.
+
 ![External validation AUC](../evidence/figures/external_validation_auc_1_5yr.svg)
 
 *Aggregate context from the private retrospective analysis. The public repository does not include the underlying clinical dataset or patient-level predictions.*
 
 Original Mirai retained useful discrimination across all cumulative horizons, with ranking performance declining as the prediction window lengthened.
+
+### Original-style calibration evidence
+
+![Decile calibration across 1–5 year horizons](../evidence/figures/original_style/external_validation_calibration_decile_1_5yr.png)
+
+Grouped calibration makes the probability-scale problem visible. It complements the compact E/O and Brier metrics reported in the curated tables.
 
 ![Calibration context](../evidence/figures/external_validation_calibration_context.svg)
 
@@ -62,13 +74,13 @@ AUC measures ranking, not absolute probability accuracy. The project therefore e
 
 ![Follow-up availability](../evidence/figures/followup_availability.svg)
 
-
-
-
-
 The later horizons illustrate the core censoring problem directly: cumulative case counts increase, but the number of exams with complete follow-up falls sharply at four and five years.
 
 ## 6. Subgroup and imaging-finding analyses
+
+![Original-style subgroup forest](../evidence/figures/original_style/subgroup_auc_forest_1yr.png)
+
+The original-style forest plot is included as a static aggregate visual summary. The curated table behind the public summary is available as [`private_context_subgroup_summary.csv`](../evidence/tables/private_context_subgroup_summary.csv); raw patient-level subgroup predictions are not included.
 
 ![Subgroup AUC forest](../evidence/figures/subgroup_auc_forest.svg)
 

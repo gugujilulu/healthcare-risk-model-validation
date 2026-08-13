@@ -44,9 +44,15 @@ Repeated exams can overweight patients who remain in screening longer. The first
 | 4 years | 0.702 | 0.727 | 0.795 | +0.093 |
 | 5 years | 0.685 | 0.663 | 0.779 | +0.095 |
 
-![First-exam-only AUC](../evidence/figures/first_exam_only_auc.svg)
+![First-exam-only AUC — original-style](../evidence/figures/original_style/first_exam_only_auc.png)
 
-![First-exam-only Brier](../evidence/figures/first_exam_only_brier.svg)
+![First-exam-only Brier — original-style](../evidence/figures/original_style/first_exam_only_brier.png)
+
+The generated SVG summaries below provide compact public redraws from curated context tables:
+
+![First-exam-only AUC summary](../evidence/figures/first_exam_only_auc.svg)
+
+![First-exam-only Brier summary](../evidence/figures/first_exam_only_brier.svg)
 
 The nonlinear tuned model retained discrimination improvement after reducing repeated test exams to one record per patient. Logistic updating did not dominate Original Mirai in every first-exam/horizon combination, which is itself useful evidence against oversimplifying model behavior.
 

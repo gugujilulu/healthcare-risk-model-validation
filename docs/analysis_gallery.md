@@ -2,6 +2,40 @@
 
 All figures in this gallery are generated from **curated aggregate project-context tables**. They contain no patient-level records, no exam-level private predictions, and no internal BC Cancer field mappings. Synthetic runnable outputs live separately under `results/`.
 
+## Original-style aggregate figures
+
+These figures are static aggregate visual summaries from the private retrospective analysis. They preserve the visual evidence structure of the original project while keeping patient-level data, ROC coordinate tables, prediction rows, internal mappings, and private scripts out of the public repository.
+
+### ROC curves across 1–5 year horizons
+
+![ROC curves](../evidence/figures/original_style/external_validation_roc_curves_1_5yr.png)
+
+This figure shows the original external-validation ROC curves and horizon-specific AUC confidence intervals. It provides the clearest visual evidence of the baseline discrimination analysis.
+
+### Decile calibration across 1–5 year horizons
+
+![Calibration deciles](../evidence/figures/original_style/external_validation_calibration_decile_1_5yr.png)
+
+This figure shows grouped observed event rates against mean predicted risks. It demonstrates why calibration was evaluated separately from AUC.
+
+### Subgroup AUC forest plot
+
+![Subgroup AUC forest](../evidence/figures/original_style/subgroup_auc_forest_1yr.png)
+
+The subgroup forest plot summarizes descriptive discrimination heterogeneity across density, age, ethnicity, family history, and imaging-finding strata. It is not interpreted as causal evidence or as proof of clinical utility.
+
+### First-exam-only sensitivity: AUC
+
+![First-exam AUC](../evidence/figures/original_style/first_exam_only_auc.png)
+
+This analysis checks whether discrimination patterns persist after reducing repeated exams to one earliest observed exam per patient.
+
+### First-exam-only sensitivity: Brier score
+
+![First-exam Brier](../evidence/figures/original_style/first_exam_only_brier.png)
+
+This companion figure evaluates probability error, not only ranking, under the first-exam-only sensitivity design.
+
 ## A. External validation
 
 ### A1. Original Mirai discrimination across 1–5 year horizons
