@@ -4,7 +4,7 @@
 
 The underlying work originated in a UBC Master of Data Science capstone with BC Cancer and was later extended independently into local recalibration, prediction-level model updating, calibration-method comparison, patient-cluster bootstrap, temporal future-period validation, first-exam sensitivity, feature-availability auditing, decision-curve analysis, and post-screen triage.
 
-> **Public boundary:** this repository includes selected aggregate context, public-safe figures, generic methodology, and synthetic runnable code. It does not include patient-level data, internal BC Cancer field mappings, private modeling datasets, original private scripts, the internal technical manual, or full private result tables. See [`NOTICE.md`](NOTICE.md) for how the MIT license relates to the public reconstruction code and curated aggregate evidence.
+> **Public boundary:** this repository includes selected aggregate context, public-safe figures, generic methodology, and synthetic runnable code. It does not include patient-level data, internal BC Cancer field mappings, private modeling datasets, original private scripts, the internal technical manual, or full private result tables. See [`NOTICE.md`](NOTICE.md) for the license boundary between the public reconstruction code and curated aggregate evidence assets.
 
 ## Project context and public reconstruction
 
@@ -106,8 +106,9 @@ The pipeline will:
 4. select and calibrate local-updating models without using the test set for selection;
 5. run paired patient-cluster bootstrap, subgroup, first-exam, decision-curve and temporal analyses;
 6. run the separate post-screen triage branch;
-7. regenerate synthetic figures/tables; and
-8. rebuild the public evidence summary from the curated aggregate tables.
+7. regenerate synthetic figures/tables;
+8. rebuild the public evidence summary from the curated aggregate tables; and
+9. regenerate aggregate evidence figures under `evidence/figures/`.
 
 Run tests with:
 
@@ -150,7 +151,8 @@ healthcare-risk-model-validation/
 │   ├── 05_temporal_validation.py
 │   ├── 06_post_screen_triage.py
 │   ├── 07_make_figures.py
-│   └── 08_make_public_evidence_summary.py
+│   ├── 08_make_public_evidence_summary.py
+│   └── 09_make_evidence_figures.py
 ├── results/                 # synthetic generated outputs
 │   ├── tables/
 │   └── figures/
