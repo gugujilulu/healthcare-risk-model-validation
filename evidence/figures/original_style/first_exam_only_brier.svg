@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#222}.axis{stroke:#222;stroke-width:2}.grid{stroke:#ddd;stroke-width:1}.lab{font-size:20px}.tick{font-size:17px}.title{font-size:28px;font-weight:600}.legend{font-size:17px}</style>
+<text x="600.0" y="40" text-anchor="middle" class="title">First-exam-only sensitivity: Brier score comparison</text>
+<line x1="110" y1="592.3" x2="1150" y2="592.3" class="grid"/><text x="94" y="598.3" text-anchor="end" class="tick">0.006</text>
+<line x1="110" y1="521.7" x2="1150" y2="521.7" class="grid"/><text x="94" y="527.7" text-anchor="end" class="tick">0.008</text>
+<line x1="110" y1="451.0" x2="1150" y2="451.0" class="grid"/><text x="94" y="457.0" text-anchor="end" class="tick">0.010</text>
+<line x1="110" y1="380.3" x2="1150" y2="380.3" class="grid"/><text x="94" y="386.3" text-anchor="end" class="tick">0.012</text>
+<line x1="110" y1="309.7" x2="1150" y2="309.7" class="grid"/><text x="94" y="315.7" text-anchor="end" class="tick">0.014</text>
+<line x1="110" y1="239.0" x2="1150" y2="239.0" class="grid"/><text x="94" y="245.0" text-anchor="end" class="tick">0.016</text>
+<line x1="110" y1="168.3" x2="1150" y2="168.3" class="grid"/><text x="94" y="174.3" text-anchor="end" class="tick">0.018</text>
+<line x1="110" y1="97.7" x2="1150" y2="97.7" class="grid"/><text x="94" y="103.7" text-anchor="end" class="tick">0.020</text>
+<line x1="110" y1="80" x2="110" y2="610" class="axis"/><line x1="110" y1="610" x2="1150" y2="610" class="axis"/>
+<line x1="110" y1="610" x2="110" y2="618" class="axis"/><text x="110" y="644" text-anchor="middle" class="tick">1yr</text>
+<line x1="370" y1="610" x2="370" y2="618" class="axis"/><text x="370" y="644" text-anchor="middle" class="tick">2yr</text>
+<line x1="630" y1="610" x2="630" y2="618" class="axis"/><text x="630" y="644" text-anchor="middle" class="tick">3yr</text>
+<line x1="890" y1="610" x2="890" y2="618" class="axis"/><text x="890" y="644" text-anchor="middle" class="tick">4yr</text>
+<line x1="1150" y1="610" x2="1150" y2="618" class="axis"/><text x="1150" y="644" text-anchor="middle" class="tick">5yr</text>
+<polyline points="110,591.9 370,542.4 630,408.9 890,341.5 1150,223.7" fill="none" stroke="#1f77b4" stroke-width="4"/>
+<circle cx="110" cy="591.9" r="7" fill="#1f77b4"/><circle cx="370" cy="542.4" r="7" fill="#1f77b4"/><circle cx="630" cy="408.9" r="7" fill="#1f77b4"/><circle cx="890" cy="341.5" r="7" fill="#1f77b4"/><circle cx="1150" cy="223.7" r="7" fill="#1f77b4"/>
+<polyline points="110,588.0 370,539.8 630,402.1 890,301.4 1150,115.6" fill="none" stroke="#ff7f0e" stroke-width="4"/>
+<circle cx="110" cy="588.0" r="7" fill="#ff7f0e"/><circle cx="370" cy="539.8" r="7" fill="#ff7f0e"/><circle cx="630" cy="402.1" r="7" fill="#ff7f0e"/><circle cx="890" cy="301.4" r="7" fill="#ff7f0e"/><circle cx="1150" cy="115.6" r="7" fill="#ff7f0e"/>
+<polyline points="110,585.0 370,537.2 630,399.5 890,298.4 1150,104.5" fill="none" stroke="#2ca02c" stroke-width="4"/>
+<circle cx="110" cy="585.0" r="7" fill="#2ca02c"/><circle cx="370" cy="537.2" r="7" fill="#2ca02c"/><circle cx="630" cy="399.5" r="7" fill="#2ca02c"/><circle cx="890" cy="298.4" r="7" fill="#2ca02c"/><circle cx="1150" cy="104.5" r="7" fill="#2ca02c"/>
+<text x="600" y="675" text-anchor="middle" class="lab">Prediction horizon</text><text x="30" y="350" transform="rotate(-90 30 350)" text-anchor="middle" class="lab">Brier score</text>
+<rect x="790" y="67" width="350" height="98" rx="6" fill="white" stroke="#bbb"/>
+<line x1="804" y1="95" x2="834" y2="95" stroke="#1f77b4" stroke-width="4"/><circle cx="819" cy="95" r="6" fill="#1f77b4"/><text x="844" y="101" class="legend">Final Best Tuned LightGBM</text>
+<line x1="804" y1="125" x2="834" y2="125" stroke="#ff7f0e" stroke-width="4"/><circle cx="819" cy="125" r="6" fill="#ff7f0e"/><text x="844" y="131" class="legend">Logistic Updated</text>
+<line x1="804" y1="155" x2="834" y2="155" stroke="#2ca02c" stroke-width="4"/><circle cx="819" cy="155" r="6" fill="#2ca02c"/><text x="844" y="161" class="legend">Original Mirai</text>
+</svg>

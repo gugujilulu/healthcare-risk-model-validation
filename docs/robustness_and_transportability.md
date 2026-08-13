@@ -44,9 +44,9 @@ Repeated exams can overweight patients who remain in screening longer. The first
 | 4 years | 0.702 | 0.727 | 0.795 | +0.093 |
 | 5 years | 0.685 | 0.663 | 0.779 | +0.095 |
 
-![First-exam-only AUC — original-style](../evidence/figures/original_style/first_exam_only_auc.png)
+![First-exam-only AUC — original-style](../evidence/figures/original_style/first_exam_only_auc.svg)
 
-![First-exam-only Brier — original-style](../evidence/figures/original_style/first_exam_only_brier.png)
+![First-exam-only Brier — original-style](../evidence/figures/original_style/first_exam_only_brier.svg)
 
 The generated SVG summaries below provide compact public redraws from curated context tables:
 

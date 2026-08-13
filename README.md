@@ -57,7 +57,7 @@ Future-period testing reduced the larger random-split gains to a small positive 
 
 ### 5. Repeated-exam sensitivity
 
-![First-exam-only sensitivity](evidence/figures/original_style/first_exam_only_auc.png)
+![First-exam-only sensitivity](evidence/figures/original_style/first_exam_only_auc.svg)
 
 After reducing the held-out set to one earliest observed exam per patient, the tuned nonlinear model retained the main discrimination improvement pattern. The full visual gallery also includes subgroup AUC forest plots and imaging-finding analyses; see [`docs/analysis_gallery.md`](docs/analysis_gallery.md).
 

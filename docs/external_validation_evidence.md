@@ -78,7 +78,7 @@ The later horizons illustrate the core censoring problem directly: cumulative ca
 
 ## 6. Subgroup and imaging-finding analyses
 
-![Original-style subgroup forest](../evidence/figures/original_style/subgroup_auc_forest_1yr.png)
+![Original-style subgroup forest](../evidence/figures/original_style/subgroup_auc_forest_1yr.svg)
 
 The original-style forest plot is included as a static aggregate visual summary. The curated table behind the public summary is available as [`private_context_subgroup_summary.csv`](../evidence/tables/private_context_subgroup_summary.csv); raw patient-level subgroup predictions are not included.
 

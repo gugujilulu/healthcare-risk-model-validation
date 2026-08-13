@@ -20,19 +20,19 @@ This figure shows grouped observed event rates against mean predicted risks. It 
 
 ### Subgroup AUC forest plot
 
-![Subgroup AUC forest](../evidence/figures/original_style/subgroup_auc_forest_1yr.png)
+![Subgroup AUC forest](../evidence/figures/original_style/subgroup_auc_forest_1yr.svg)
 
 The subgroup forest plot summarizes descriptive discrimination heterogeneity across density, age, ethnicity, family history, and imaging-finding strata. It is not interpreted as causal evidence or as proof of clinical utility.
 
 ### First-exam-only sensitivity: AUC
 
-![First-exam AUC](../evidence/figures/original_style/first_exam_only_auc.png)
+![First-exam AUC](../evidence/figures/original_style/first_exam_only_auc.svg)
 
 This analysis checks whether discrimination patterns persist after reducing repeated exams to one earliest observed exam per patient.
 
 ### First-exam-only sensitivity: Brier score
 
-![First-exam Brier](../evidence/figures/original_style/first_exam_only_brier.png)
+![First-exam Brier](../evidence/figures/original_style/first_exam_only_brier.svg)
 
 This companion figure evaluates probability error, not only ranking, under the first-exam-only sensitivity design.
 
