@@ -25,7 +25,7 @@ The private best-observed adaptation values are **exploratory held-out results**
 
 ### 1. External validation across 1–5 year horizons
 
-![ROC curves across 1–5 year horizons](evidence/figures/original_style/external_validation_roc_curves_1_5yr.png)
+<img width="320" height="274" alt="external_validation_roc_curves_1_5yr" src="https://github.com/user-attachments/assets/ba85b9a2-f897-432f-9c29-0adfb934861c" />
 
 Original Mirai retained useful discrimination in the BC Cancer screening cohort across 1–5 year cumulative horizons. This is a static aggregate visual summary from the private retrospective analysis; patient-level predictions and ROC coordinate tables are not included.
 
@@ -35,7 +35,7 @@ The companion summary keeps the capstone full-cohort external-validation context
 
 ### 2. Calibration is a separate problem from ranking
 
-![Decile calibration across 1–5 year horizons](evidence/figures/original_style/external_validation_calibration_decile_1_5yr.png)
+<img width="2100" height="1800" alt="fig2_calibration" src="https://github.com/user-attachments/assets/30d5a1ed-d3f0-44f8-b7cd-fe31db706047" />
 
 Calibration was evaluated separately from discrimination. The original validation analysis used grouped observed-versus-predicted risk, Brier score, E/O ratio, and calibration slope/intercept to assess whether predicted probabilities were numerically reliable.
 
