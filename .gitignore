@@ -1,0 +1,23 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.env
+.ipynb_checkpoints/
+
+# Private / local data must never be committed
+data/private/
+data/raw/
+*.rds
+*.xlsx
+*.xls
+
+# Model artifacts
+*.pkl
+*.joblib
+*.bin
+# Generated full synthetic cohort and intermediate prediction-level outputs
+data/synthetic/screening_demo.csv
+results/tables/locked_test_predictions.csv
