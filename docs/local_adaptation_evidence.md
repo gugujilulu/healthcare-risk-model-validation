@@ -50,7 +50,7 @@ LightGBM was used to capture nonlinear relationships and interactions among fixe
 
 ### Best observed exploratory held-out AUC by horizon
 
-> The following table is a curated aggregate summary of observed exploratory held-out patterns from the private extension after public-safe reduction. It is included to document the project evidence chain and model-comparison structure. It is not a final locked-protocol clinical performance table, not an audited clinical-grade result table, and should not be combined with the synthetic pipeline outputs as if they were the same evidence source.
+> The following table is a curated aggregate summary of observed exploratory held-out patterns from the private extension after public-safe reduction. It documents the project evidence chain and model-comparison structure and is kept separate from the synthetic locked-test pipeline.
 
 | Horizon | Original held-out AUC | Best observed adapted AUC | ΔAUC | Selected private candidate |
 |---|---:|---:|---:|---|
@@ -66,9 +66,9 @@ LightGBM was used to capture nonlinear relationships and interactions among fixe
 
 ![E/O comparison](../evidence/figures/eo_ratio_comparison.svg)
 
-These are **observed exploratory held-out results** from the private independent extension. They should not be interpreted as performance from a single model whose full feature set, hyperparameters, calibration method, and comparison set were pre-locked before one untouched test evaluation.
+These are **observed exploratory held-out results** from the private independent extension. Candidate choices were informed by held-out comparisons, whereas the public reconstruction implements a cleaner validation-selection / locked-test protocol.
 
-The public reconstruction deliberately implements a cleaner protocol:
+The public reconstruction protocol is:
 
 ```text
 train -> validation calibration / selection -> lock -> one final test evaluation

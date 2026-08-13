@@ -2,9 +2,7 @@
 
 This gallery contains public-facing aggregate visual summaries. Some figures are reconstructed from curated aggregate tables, while selected original-style figures are static derivative summaries from private retrospective analysis after public-safe reduction.
 
-The gallery is designed to show the analytical evidence structure, not to publish the private study archive. It does not include patient-level records, exam-level predictions, ROC coordinate tables, calibration-bin source tables, internal field mappings, private datasets, original scripts, or the internal technical manual.
-
-The figures should be interpreted as portfolio-context summaries of validation, calibration, robustness, and transportability analyses. They are not official BC Cancer results, audited clinical-grade performance estimates, final clinical performance claims, prospective validation, or deployment specifications.
+The gallery is designed to show the analytical evidence structure across validation, calibration, robustness, and transportability. Patient-level records, exam-level predictions, ROC coordinate tables, calibration-bin source tables, internal field mappings, private datasets, original scripts, and the internal technical manual remain outside the public repository.
 
 Synthetic runnable outputs live separately under `results/`.
 

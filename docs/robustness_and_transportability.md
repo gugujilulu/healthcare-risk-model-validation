@@ -4,7 +4,7 @@
 
 The modeling unit is an exam, but repeated exams from one patient are correlated. The paired bootstrap therefore resamples **patients**, carries all eligible exams from each sampled patient, and evaluates the baseline and adapted models on the same replicate.
 
-> Bootstrap values are curated aggregate context from the private exploratory extension. They summarize paired uncertainty patterns and are not raw bootstrap replicate outputs or a complete reproducibility package.
+> Bootstrap values are curated aggregate context from the private exploratory extension. They summarize paired uncertainty patterns; raw bootstrap replicate rows remain outside the public repository.
 
 | Horizon | Mean ΔAUC | 95% CI | Mean ΔBrier | 95% CI |
 |---|---:|---:|---:|---:|
@@ -22,7 +22,7 @@ The bootstrap supports stability of the paired improvement **within the held-out
 
 Temporal validation is the central stress test in this project. It trains on earlier calendar periods and evaluates later eligible screening periods, asking whether local gains persist under calendar-time shift.
 
-> Temporal values are curated aggregate context from a retrospective future-period stress test. They document an observed transportability pattern under one temporal design and should not be read as prospective validation.
+> Temporal values are curated aggregate context from a retrospective future-period stress test, documenting the observed transportability pattern under one temporal design.
 
 | Horizon | Temporal Original AUC | Temporal adapted AUC | ΔAUC | Test exams / cases |
 |---|---:|---:|---:|---:|
@@ -40,7 +40,7 @@ The central result is a **contraction, not a contradiction**. Random patient-spl
 
 Repeated exams can overweight patients who remain in screening longer. The first-exam sensitivity analysis retains only the earliest observed test exam per patient and re-evaluates the models.
 
-> First-exam-only results are included as public-facing robustness summaries. They show sensitivity-design behavior after public-safe reduction and are not final audited clinical result tables.
+> First-exam-only results are included as public-facing robustness summaries documenting sensitivity-design behavior after public-safe reduction.
 
 | Horizon | Original AUC | Logistic Updated AUC | Final tuned AUC | Final ΔAUC |
 |---|---:|---:|---:|---:|
