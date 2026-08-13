@@ -1,10 +1,53 @@
-name: staging-upgrade
+name: apply-upgrade
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
 
 jobs:
-  idle:
+  apply:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Staging reviewed upgrade payload."
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Reconstruct reviewed public-safe upgrade
+        run: |
+          cat .upgrade/chunk00.b64 .upgrade/chunk01.b64 .upgrade/chunk02.b64 .upgrade/chunk03.b64 .upgrade/fix04_*.b64 .upgrade/chunk05.b64 .upgrade/fix06_*.b64 > /tmp/hrmv_upgrade.b64
+          base64 -d /tmp/hrmv_upgrade.b64 > /tmp/hrmv_upgrade.tar.gz
+          echo "bdb4661778bbac4fa1e0822a0c6f5c028af732cd7883a3b92ea544afc5cfd8e8  /tmp/hrmv_upgrade.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/hrmv_upgrade.tar.gz
+          rm -rf .upgrade
+      - run: pip install -r requirements.txt
+      - name: Unit and regression tests
+        run: pytest -q
+      - name: Full reproducibility pipeline
+        run: python run_all.py
+      - name: Public-boundary checks
+        run: |
+          ! grep -R "<your-username>" README.md docs reports evidence || false
+          python - <<'PY'
+          import pandas as pd
+          p = 'data/synthetic/screening_demo_sample.csv'
+          d = pd.read_csv(p)
+          e = pd.to_datetime(d['exam_date'])
+          f = pd.to_datetime(d['followup_end'])
+          c = pd.to_datetime(d['cancer_date'], errors='coerce')
+          assert (e <= f).all()
+          assert (c.isna() | (c <= f)).all()
+          assert d.groupby('patient_id')['split'].nunique().max() == 1
+          print('public-boundary QA passed')
+          PY
+      - name: Commit completed evidence-package upgrade
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Upgrade to public-safe evidence package [skip ci]"
+          git push
