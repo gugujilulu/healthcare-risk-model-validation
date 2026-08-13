@@ -4,7 +4,7 @@
 
 The underlying work originated in a UBC Master of Data Science capstone with BC Cancer and was later extended independently into local recalibration, prediction-level model updating, calibration-method comparison, patient-cluster bootstrap, temporal future-period validation, first-exam sensitivity, feature-availability auditing, decision-curve analysis, and post-screen triage.
 
-> **Public boundary:** this repository includes selected aggregate context, public-safe figures, generic methodology, and synthetic runnable code. It does not include patient-level data, internal BC Cancer field mappings, private modeling datasets, original private scripts, the internal technical manual, or full private result tables. See [`NOTICE.md`](NOTICE.md) for the license boundary between the public reconstruction code and curated aggregate evidence assets.
+> **Public boundary:** this repository includes selected aggregate-context summaries, public-facing derivative figures, generic methodology, and synthetic runnable code. It does not include patient-level data, exam-level predictions, ROC coordinate tables, calibration-bin source tables, internal BC Cancer field mappings, private modeling datasets, original private scripts, the internal technical manual, raw bootstrap replicate rows, or full private result tables. Figures and tables under `evidence/` are curated derivative summaries for portfolio context; they are not an official BC Cancer release, not a complete study archive, not audited clinical-grade performance estimates, and not final clinical performance claims. See [`NOTICE.md`](NOTICE.md).
 
 ## Project context and public reconstruction
 
@@ -19,6 +19,8 @@ The underlying work originated in a UBC Master of Data Science capstone with BC 
 
 Two historical evaluation contexts are kept separate. The capstone full-cohort external validation produced AUCs of approximately **0.731 to 0.665** across 1–5 years. The later independent extension used a patient-level held-out framework, where Original Mirai AUCs were approximately **0.742 to 0.691** and the strongest observed exploratory adapted AUCs were approximately **0.774 to 0.835**. Under future-period temporal validation, the larger random-split gains contracted to approximately **+0.007 to +0.017**.
 
+All private-context values are reported as rounded aggregate context for portfolio interpretation. They summarize observed analytical patterns from a retrospective exploratory workflow and should not be interpreted as audited clinical-grade performance estimates.
+
 The private best-observed adaptation values are **exploratory held-out results**, not a claim that one fully pre-locked model was evaluated once on an untouched test set. The public reconstruction implements a cleaner locked-test protocol; see [`docs/evaluation_protocol.md`](docs/evaluation_protocol.md).
 
 ## Evidence highlights
@@ -26,6 +28,8 @@ The private best-observed adaptation values are **exploratory held-out results**
 ### 1. External validation across 1–5 year horizons
 
 <img width="2100" height="1800" alt="fig1_roc_curves" src="https://github.com/user-attachments/assets/507bacfd-d7db-4d70-a8b5-89ad4458d6a2" />
+
+*Public-facing aggregate reconstruction derived from private retrospective validation outputs after public-safe reduction. No patient-level records, exam-level prediction rows, ROC coordinate tables, internal mappings, or original source files are included. This figure illustrates the validation evidence structure and should not be read as an official BC Cancer performance release or audited clinical-grade result.*
 
 Original Mirai retained useful discrimination in the BC Cancer screening cohort across 1–5 year cumulative horizons. This is a static aggregate visual summary from the private retrospective analysis; patient-level predictions and ROC coordinate tables are not included.
 
@@ -37,6 +41,8 @@ The companion summary keeps the capstone full-cohort external-validation context
 
 <img width="2100" height="1800" alt="fig2_calibration" src="https://github.com/user-attachments/assets/30d5a1ed-d3f0-44f8-b7cd-fe31db706047" />
 
+*Public-facing aggregate reconstruction derived from grouped calibration outputs after public-safe reduction. The underlying patient-level predictions and full calibration-bin source tables are not published. This visual is included to show the probability-calibration assessment structure, not to define a clinical deployment threshold or final clinical performance claim.*
+
 Calibration was evaluated separately from discrimination. The original validation analysis used grouped observed-versus-predicted risk, Brier score, E/O ratio, and calibration slope/intercept to assess whether predicted probabilities were numerically reliable.
 
 ![External validation calibration context](evidence/figures/external_validation_calibration_context.svg)
@@ -47,17 +53,23 @@ The companion summary provides a compact horizon-level view of probability burde
 
 ![Local adaptation summary](evidence/figures/local_adaptation_auc_summary.svg)
 
+*Curated aggregate context from the private exploratory extension. Values summarize observed held-out patterns after public-safe reduction and are separated from the runnable synthetic locked-test pipeline. They should not be interpreted as audited clinical-grade performance estimates.*
+
 The independent extension evaluated recalibration, logistic updating, and calibrated LightGBM model updating. The headline adapted values are reported as observed exploratory held-out performance and are explicitly separated from the public locked-test demo.
 
 ### 4. Temporal validation contracts random-split gains
 
 ![Temporal validation contraction](evidence/figures/temporal_validation_contraction.svg)
 
+*Curated aggregate context summarizing a future-period stress test. It documents the observed contraction pattern in the private exploratory analysis; it is not prospective validation, deployment evidence, or an official institutional result.*
+
 Future-period testing reduced the larger random-split gains to a small positive advantage. This contraction is a central interpretation boundary, not a detail hidden in limitations.
 
 ### 5. Repeated-exam sensitivity
 
 ![First-exam-only sensitivity](evidence/figures/original_style/first_exam_only_auc.svg)
+
+*Public-facing robustness summary derived from aggregate first-exam-only sensitivity outputs. It is included to document the sensitivity design and observed pattern, not as a complete reproducibility dataset or final audited clinical result table.*
 
 After reducing the held-out set to one earliest observed exam per patient, the tuned nonlinear model retained the main discrimination improvement pattern. The full visual gallery also includes subgroup AUC forest plots and imaging-finding analyses; see [`docs/analysis_gallery.md`](docs/analysis_gallery.md).
 

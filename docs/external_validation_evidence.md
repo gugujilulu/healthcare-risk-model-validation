@@ -44,7 +44,11 @@ The independent extension introduced a patient-level train / validation / test f
 
 This held-out baseline is the correct comparator for the independent-extension adaptation gains reported elsewhere in the repository.
 
+> These values are curated aggregate context. They are included to explain the validation and adaptation workflow, not to serve as an official BC Cancer result table, a complete reproducibility dataset, or audited clinical-grade performance estimates.
+
 ## 4. Discrimination and calibration are separate questions
+
+> The figures in this section are public-facing aggregate summaries. They preserve the structure and high-level patterns of the private retrospective validation analysis after public-safe reduction. They do not publish the underlying clinical dataset, patient-level prediction rows, ROC coordinates, or full calibration-bin source tables.
 
 ### Original-style ROC evidence
 

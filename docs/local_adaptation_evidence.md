@@ -50,6 +50,8 @@ LightGBM was used to capture nonlinear relationships and interactions among fixe
 
 ### Best observed exploratory held-out AUC by horizon
 
+> The following table is a curated aggregate summary of observed exploratory held-out patterns from the private extension after public-safe reduction. It is included to document the project evidence chain and model-comparison structure. It is not a final locked-protocol clinical performance table, not an audited clinical-grade result table, and should not be combined with the synthetic pipeline outputs as if they were the same evidence source.
+
 | Horizon | Original held-out AUC | Best observed adapted AUC | ΔAUC | Selected private candidate |
 |---|---:|---:|---:|---|
 | 1 year | 0.742 | 0.835 | +0.093 | second-round tuned LightGBM + Platt |
