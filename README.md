@@ -98,7 +98,7 @@ All figures below are generated from the synthetic demo pipeline.
 ## Run the full demo
 
 ```bash
-git clone https://github.com/<your-username>/healthcare-risk-model-validation.git
+git clone https://github.com/gugujilulu/healthcare-risk-model-validation.git
 cd healthcare-risk-model-validation
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
