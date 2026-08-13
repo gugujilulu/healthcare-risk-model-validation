@@ -1,0 +1,6 @@
+horizon,original_heldout_auc,best_observed_adapted_auc,delta_auc,model,feature_variant,calibration,adapted_brier,adapted_e_o_ratio
+1yr,0.7422463399493339,0.8351476210125515,0.0929012810632176,M6 Second-round Tuned LightGBM + Platt,engineered_pre_screen,platt,0.0054866910004004,0.9408871694109991
+2yr,0.7404269977573402,0.8250949757408161,0.08466797798347592,M6 Second-round Tuned LightGBM + Platt,engineered_pre_screen,platt,0.007542807947747,0.941470398311526
+3yr,0.7146199460179244,0.7737298058662345,0.059109859848310076,M5 First-round Tuned LightGBM + Best Calibration,current_pre_screen,beta_style,0.0117186859246659,0.9353113777630344
+4yr,0.7028936133115848,0.7908380273312103,0.0879444140196255,M6 Second-round Tuned LightGBM + Platt,engineered_pre_screen,platt,0.0145442808844091,0.9074358483919386
+5yr,0.6906191619276137,0.811064072131694,0.12044491020408021,M5 First-round Tuned LightGBM + Best Calibration,current_pre_screen,beta_style,0.0173916536413782,0.9137987567209608

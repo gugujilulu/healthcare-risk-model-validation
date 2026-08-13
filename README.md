@@ -1,101 +1,85 @@
 # Healthcare Risk Model Validation
 
-**Public-safe reconstruction of an external validation and local adaptation workflow for mammography-based breast cancer risk prediction.**
+**Public-safe evidence package and runnable reconstruction of a real mammography-based breast cancer risk-model validation and local adaptation project.**
 
-The underlying work originated in a UBC Master of Data Science capstone with BC Cancer and was later extended independently into local model updating, calibration-method comparison, bootstrap uncertainty, temporal validation, feature-availability auditing, and robustness analysis. This repository reconstructs that analytical workflow with synthetic data and a generic feature schema.
+The underlying work originated in a UBC Master of Data Science capstone with BC Cancer and was later extended independently into local recalibration, prediction-level model updating, calibration-method comparison, patient-cluster bootstrap, temporal future-period validation, first-exam sensitivity, feature-availability auditing, decision-curve analysis, and post-screen triage.
 
-> **Public boundary:** no patient-level BC Cancer data, internal field mappings, original private scripts, internal technical-manual text, or private result tables are included.
+> **Public boundary:** this repository includes selected aggregate context, public-safe figures, generic methodology, and synthetic runnable code. It does not include patient-level data, internal BC Cancer field mappings, private modeling datasets, original private scripts, the internal technical manual, or full private result tables.
 
-## Project at a glance
+## Project context and public reconstruction
 
-| Area | Scope |
+| Private retrospective analysis context | Public repository artifact |
 |---|---|
-| Prediction task | 1–5 year cumulative breast cancer risk |
-| Validation design | horizon-specific follow-up eligibility, cumulative endpoints, patient-level splitting |
-| Evaluation | ROC AUC, Brier score, E/O ratio, calibration intercept/slope, decile calibration |
-| Local adaptation | logistic updating and LightGBM using fixed baseline risk predictions + pre-screen structured variables |
-| Uncertainty / robustness | patient-cluster bootstrap, subgroup analysis, first-exam-only sensitivity |
-| Transportability | future-period temporal validation |
-| Prediction-time control | explicit pre-screen vs post-screen feature-availability audit |
-| Secondary branch | separate post-screen short-horizon triage analysis |
+| Provincial screening cohort with up to **438,571 eligible screening exams** | Synthetic longitudinal screening cohort implementing the same evaluation logic |
+| **1–5 year cumulative risk horizons** with horizon-specific follow-up eligibility | Public endpoint builder with censoring-aware eligibility |
+| Original Mirai external validation using AUC, Brier, E/O, calibration and subgroup analyses | Curated aggregate evidence + synthetic external-validation pipeline |
+| Prediction-level local adaptation using fixed Mirai outputs + structured variables | Logistic and LightGBM updating with validation-only model/calibration selection |
+| Patient-cluster bootstrap and future-period temporal validation | Public paired bootstrap and temporal stress-test modules |
+| Explicit pre-screen vs post-screen information boundary | Leakage audit + separate post-screen triage branch |
 
-## Private-project context
+Two historical evaluation contexts are kept separate. The capstone full-cohort external validation produced AUCs of approximately **0.731 to 0.665** across 1–5 years. The later independent extension used a patient-level held-out framework, where Original Mirai AUCs were approximately **0.742 to 0.691** and the strongest observed exploratory adapted AUCs were approximately **0.774 to 0.835**. Under future-period temporal validation, the larger random-split gains contracted to approximately **+0.007 to +0.017**.
 
-The private retrospective analysis used a large provincial screening cohort with **up to approximately 438,000 screening exams** across 1–5 year horizons. In the independent exploratory extension, the best observed held-out local-adaptation AUCs ranged from approximately **0.774 to 0.835**, with larger random-split gains contracting to approximately **+0.007 to +0.017** under future-period temporal validation.
+The private best-observed adaptation values are **exploratory held-out results**, not a claim that one fully pre-locked model was evaluated once on an untouched test set. The public reconstruction implements a cleaner locked-test protocol; see [`docs/evaluation_protocol.md`](docs/evaluation_protocol.md).
 
-Those figures are project context only. The runnable outputs in this repository are generated from synthetic data and are **not** intended to reproduce private BC Cancer result tables.
+## Evidence highlights
 
-The private exploratory analysis also compared multiple model, calibration, and blending choices on held-out data. Accordingly, those headline values should be interpreted as **observed exploratory held-out performance**, not as a single pre-locked model evaluated once on an untouched test set. The public reconstruction implements a cleaner locked-test workflow described in [`docs/evaluation_protocol.md`](docs/evaluation_protocol.md).
+### 1. External validation across 1–5 year horizons
 
-## Analytical workflow
+![External validation AUC across horizons](evidence/figures/external_validation_auc_1_5yr.svg)
 
-```text
-Synthetic longitudinal screening cohort
-        │
-        ├─ cumulative 1–5y outcomes
-        ├─ horizon-specific follow-up eligibility
-        └─ patient-level train / validation / test split
-        │
-        ▼
-External validation of fixed baseline risk predictions
-        │
-        ├─ discrimination
-        ├─ calibration
-        └─ probability error
-        │
-        ▼
-Prediction-level local model updating
-        │
-        ├─ logistic updating
-        ├─ LightGBM
-        └─ validation-only model / calibration selection
-        │
-        ▼
-Locked test evaluation
-        │
-        ├─ patient-cluster bootstrap
-        ├─ subgroup robustness
-        ├─ first-exam-only sensitivity
-        ├─ decision-curve analysis
-        └─ future-period temporal validation
+Original Mirai retained useful discrimination in the local screening cohort, with performance decreasing over longer cumulative horizons. The figure deliberately separates the capstone full-cohort context from the later held-out baseline.
 
-Post-screen imaging/result variables are isolated in a separate triage branch.
-```
+### 2. Calibration is a separate problem from ranking
 
-## Why the validation design matters
+![External validation calibration context](evidence/figures/external_validation_calibration_context.svg)
 
-The repository is organized around methodological decisions that materially affect healthcare model evaluation:
+The project evaluates discrimination and probability reliability separately using AUC, Brier score, E/O ratio, calibration intercept/slope, and grouped observed-versus-predicted risk.
 
-- **Repeated exams:** multiple screening exams from one patient are not independent observations, so splitting and bootstrap resampling operate at patient level.
-- **Cumulative outcomes:** each horizon uses a cumulative event definition and its own follow-up eligibility rule.
-- **Incomplete follow-up:** an exam is evaluated only when an event occurs within the horizon or sufficient follow-up is observed.
-- **Calibration beyond AUC:** useful rank ordering does not guarantee accurate absolute risk probabilities.
-- **Prediction-time leakage:** post-screen findings are blocked from the main pre-screen adaptation model.
-- **Temporal stress testing:** future-period evaluation is used to test whether random-split gains transport across calendar time.
+### 3. Local adaptation adds retrospective signal
 
-See [`docs/methodology.md`](docs/methodology.md) for the full public methodology.
+![Local adaptation summary](evidence/figures/local_adaptation_auc_summary.svg)
 
-## Public reconstruction outputs
+The independent extension evaluated recalibration, logistic updating, and calibrated LightGBM model updating. The headline adapted values are reported as observed exploratory held-out performance and are explicitly separated from the public locked-test demo.
 
-All figures below are generated from the synthetic demo pipeline.
+### 4. Temporal validation contracts random-split gains
 
-### Discrimination across horizons
+![Temporal validation contraction](evidence/figures/temporal_validation_contraction.svg)
 
-![Synthetic AUC comparison](results/figures/auc_comparison.svg)
+Future-period testing reduced the larger random-split gains to a small positive advantage. This contraction is a central interpretation boundary, not a detail hidden in limitations.
 
-### Calibration
+### 5. Repeated-exam sensitivity
 
-![Synthetic calibration](results/figures/calibration_5yr.svg)
+![First-exam-only sensitivity](evidence/figures/first_exam_only_auc.svg)
 
-### Patient-cluster bootstrap
+After reducing the held-out set to one earliest observed exam per patient, the tuned nonlinear model retained the main discrimination improvement pattern.
 
-![Synthetic bootstrap delta AUC](results/figures/bootstrap_delta_auc_ci.svg)
+## What this repository demonstrates
 
-### Future-period temporal validation
+- **External validation:** exam-level prediction origins, cumulative 1–5y endpoints, follow-up eligibility, AUC, Brier, E/O and calibration.
+- **Patient-level dependence:** all exams from one patient remain together for splitting; bootstrap resampling occurs at patient level.
+- **Local model updating:** fixed horizon-specific Mirai probabilities are combined with generic pre-screen structured variables using logistic regression and LightGBM.
+- **Calibration:** probability calibration is evaluated separately from ranking, with model/calibration selection completed before the public test evaluation.
+- **Robustness:** patient-cluster bootstrap, subgroup analysis, first-exam-only sensitivity and decision-curve analysis.
+- **Transportability:** later calendar periods are used to stress-test whether random-split adaptation gains persist over time.
+- **Prediction-time control:** current findings/result variables are blocked from the main risk-updating model and isolated in a later post-screen triage task.
+- **Public-safe reproducibility:** synthetic data reproduce the analytical structure without releasing private patient-level assets.
 
-![Synthetic temporal validation](results/figures/temporal_validation.svg)
+## Evidence package
 
-## Run the full demo
+| Document | What it adds |
+|---|---|
+| [`docs/project_evidence_map.md`](docs/project_evidence_map.md) | Maps the private analysis chain to public-safe repository artifacts |
+| [`docs/external_validation_evidence.md`](docs/external_validation_evidence.md) | Cohort, follow-up, capstone full-cohort validation, held-out baseline, calibration and subgroup evidence |
+| [`docs/local_adaptation_evidence.md`](docs/local_adaptation_evidence.md) | Recalibration, logistic updating, tuned LightGBM and horizon-specific observed winners |
+| [`docs/robustness_and_transportability.md`](docs/robustness_and_transportability.md) | Patient bootstrap, temporal validation, first-exam sensitivity and leakage audit |
+| [`docs/clinical_use_analyses.md`](docs/clinical_use_analyses.md) | High-risk capture, DCA, blending and post-screen triage |
+| [`docs/technical_decisions.md`](docs/technical_decisions.md) | Key analytical choices and their rationale |
+| [`docs/analysis_gallery.md`](docs/analysis_gallery.md) | Curated visual evidence with interpretation notes |
+| [`reports/public_evidence_summary.md`](reports/public_evidence_summary.md) | Compact narrative summary of the evidence chain |
+
+The aggregate context files themselves are separated under [`evidence/`](evidence/README.md). Synthetic generated outputs remain under `results/`.
+
+## Runnable synthetic pipeline
 
 ```bash
 git clone https://github.com/gugujilulu/healthcare-risk-model-validation.git
@@ -109,18 +93,21 @@ python run_all.py
 The pipeline will:
 
 1. generate a synthetic longitudinal screening cohort;
-2. construct cumulative endpoints and follow-up eligibility;
-3. evaluate the fixed baseline risk model;
+2. construct cumulative endpoints and horizon-specific follow-up eligibility;
+3. run synthetic external validation of the fixed baseline risk outputs;
 4. select and calibrate local-updating models without using the test set for selection;
-5. run paired patient-cluster bootstrap, subgroup, first-exam, decision-curve, and temporal analyses;
-6. run the separate post-screen triage branch; and
-7. regenerate the public figures and tables.
+5. run paired patient-cluster bootstrap, subgroup, first-exam, decision-curve and temporal analyses;
+6. run the separate post-screen triage branch;
+7. regenerate synthetic figures/tables; and
+8. rebuild the public evidence summary from the curated aggregate tables.
 
 Run tests with:
 
 ```bash
 pytest -q
 ```
+
+CI runs both `pytest -q` and the complete `python run_all.py` pipeline.
 
 ## Repository structure
 
@@ -153,8 +140,13 @@ healthcare-risk-model-validation/
 │   ├── 04_robustness.py
 │   ├── 05_temporal_validation.py
 │   ├── 06_post_screen_triage.py
-│   └── 07_make_figures.py
-├── results/
+│   ├── 07_make_figures.py
+│   └── 08_make_public_evidence_summary.py
+├── results/                 # synthetic generated outputs
+│   ├── tables/
+│   └── figures/
+├── evidence/                # curated aggregate private-project context
+│   ├── README.md
 │   ├── tables/
 │   └── figures/
 ├── docs/
@@ -162,24 +154,37 @@ healthcare-risk-model-validation/
 │   ├── public_boundary.md
 │   ├── evaluation_protocol.md
 │   ├── interpretation.md
-│   └── limitations.md
+│   ├── limitations.md
+│   ├── project_evidence_map.md
+│   ├── external_validation_evidence.md
+│   ├── local_adaptation_evidence.md
+│   ├── robustness_and_transportability.md
+│   ├── clinical_use_analyses.md
+│   ├── technical_decisions.md
+│   └── analysis_gallery.md
+├── reports/
+│   └── public_evidence_summary.md
 └── tests/
 ```
 
 ## Interpretation boundary
 
-This repository demonstrates **external validation and prediction-level local adaptation of fixed risk outputs**. It does **not** retrain or fine-tune the Mirai image network, claim clinical deployment, or represent an official BC Cancer model release.
+This repository demonstrates **external validation and prediction-level local adaptation of fixed Mirai risk outputs**. It does **not** retrain or fine-tune the Mirai image network, claim clinical deployment, establish prospective utility, or represent an official BC Cancer model release.
+
+Private-context figures/tables are curated aggregate evidence. Synthetic outputs are runnable demonstrations. They are intentionally not presented as the same evidence source.
 
 The separate post-screen branch uses information available after the screening exam and therefore answers a different prediction-time question from the main pre-screen/general risk-updating workflow.
 
 ## My role
 
-I implemented the analytical code and validation workflow for the capstone analysis and later independently extended the work into local adaptation, calibration-method comparison, robustness analysis, temporal validation, feature-availability audit, and this public-safe reconstruction.
+I implemented the analytical code and validation workflow for the capstone external-validation analysis, including cohort construction, outcome definition, model evaluation, calibration tables, patient-cluster bootstrap, subgroup analysis, follow-up availability summaries, and validation figures.
+
+I later independently extended the work into local recalibration, logistic and LightGBM model updating, calibration-method comparison, robustness analysis, patient-cluster bootstrap, temporal future-period validation, first-exam sensitivity, feature-availability audit, decision-curve analysis, post-screen triage, and this public-safe reconstruction.
 
 ## Additional documentation
 
-- [`docs/methodology.md`](docs/methodology.md) — analytical design and method definitions
-- [`docs/evaluation_protocol.md`](docs/evaluation_protocol.md) — locked-test public protocol and retrospective exploratory context
-- [`docs/public_boundary.md`](docs/public_boundary.md) — what is and is not represented publicly
-- [`docs/interpretation.md`](docs/interpretation.md) — model/task interpretation, including the post-screen branch
+- [`docs/methodology.md`](docs/methodology.md) — public analytical design and method definitions
+- [`docs/evaluation_protocol.md`](docs/evaluation_protocol.md) — locked-test public protocol vs retrospective exploratory context
+- [`docs/public_boundary.md`](docs/public_boundary.md) — asset-level public/private boundary
+- [`docs/interpretation.md`](docs/interpretation.md) — model/task interpretation
 - [`docs/limitations.md`](docs/limitations.md) — limitations and non-claims

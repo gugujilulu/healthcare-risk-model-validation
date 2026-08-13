@@ -18,7 +18,7 @@ def main():
     df = pd.read_csv(ROOT / "data" / "synthetic" / "screening_demo.csv", parse_dates=["exam_date", "cancer_date", "followup_end"])
     pred = pd.read_csv(ROOT / "results" / "tables" / "locked_test_predictions.csv", parse_dates=["exam_date"])
 
-    boot = patient_cluster_bootstrap(pred, n_boot=300)
+    boot = patient_cluster_bootstrap(pred, n_boot=100)
     boot.to_csv(ROOT / "results" / "tables" / "bootstrap_improvement_ci.csv", index=False)
 
     subgroup = evaluate_subgroups(df, pred, horizon=1)

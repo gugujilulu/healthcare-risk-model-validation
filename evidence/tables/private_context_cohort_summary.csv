@@ -1,0 +1,6 @@
+horizon,eligible_exams,cases,eligible_percent,event_rate_percent,excluded_short_followup,eligible_test_exams,test_cases
+1yr,438571,2676,100.0,0.61,0,21937,126
+2yr,438571,3705,100.0,0.845,0,21937,173
+3yr,438571,5550,100.0,1.265,0,21937,270
+4yr,379203,6670,86.46,1.759,59368,18989,327
+5yr,303929,8011,69.3,2.636,134642,15231,393

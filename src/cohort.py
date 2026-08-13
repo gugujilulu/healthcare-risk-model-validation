@@ -25,9 +25,8 @@ def build_cumulative_endpoints(
 ) -> pd.DataFrame:
     """Create horizon-specific cumulative labels and follow-up eligibility.
 
-    An exam is eligible for horizon k if either an observed event occurs within
-    k years after that exam or the exam has at least k years of observed follow-up.
-    Events dated after the last observed follow-up are treated as censored.
+    An exam is eligible for horizon k if either an event occurs within k years
+    after that exam or the exam has at least k years of observed follow-up.
     """
     out = df.copy()
     exam_date = pd.to_datetime(out[exam_date_col])

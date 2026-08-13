@@ -24,6 +24,8 @@ def temporal_periods(df: pd.DataFrame, horizon: int):
     usable = by_year[(by_year["size"] >= 100) & (by_year["sum"] >= 5) & ((by_year["size"] - by_year["sum"]) >= 100)]["screen_year"].astype(int).tolist()
     if len(usable) < 4:
         raise ValueError(f"Not enough temporally eligible years for {horizon}yr")
+    # Use the latest eligible year(s) as future-period test, the immediately
+    # preceding year as validation, and all earlier years as training.
     n_test = 2 if len(usable) >= 6 and horizon <= 3 else 1
     test_years = usable[-n_test:]
     val_year = usable[-n_test-1]
@@ -39,7 +41,7 @@ def _pipeline(model_name: str, numeric, categorical, seed):
     if model_name == "logistic":
         model = LogisticRegression(max_iter=1500)
     else:
-        model = LGBMClassifier(objective="binary", n_estimators=140, learning_rate=.04, num_leaves=11, max_depth=4, min_child_samples=60, reg_lambda=1.0, random_state=seed, n_jobs=4, verbosity=-1)
+        model = LGBMClassifier(objective="binary", n_estimators=140, learning_rate=.04, num_leaves=11, max_depth=4, min_child_samples=60, reg_lambda=1.0, random_state=seed, n_jobs=1, verbosity=-1)
     return Pipeline([("prep", prep), ("model", model)])
 
 

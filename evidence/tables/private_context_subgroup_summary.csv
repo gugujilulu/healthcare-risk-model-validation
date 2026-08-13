@@ -1,0 +1,29 @@
+dimension,subgroup_clean,n,n_cases,auc,ci_low,ci_high,reliability
+ACR Breast Density,A,51973,228,0.7688,0.7336,0.8028,Reliable
+ACR Breast Density,B,136149,877,0.7227,0.7055,0.7403,Reliable
+ACR Breast Density,C,154108,1014,0.7243,0.7058,0.742,Reliable
+ACR Breast Density,D,31889,186,0.7243,0.6824,0.7607,Reliable
+Age Group,<50,91805,393,0.7164,0.6883,0.7438,Reliable
+Age Group,50-59,150226,742,0.7346,0.7143,0.7536,Reliable
+Age Group,60-69,137450,996,0.7256,0.7065,0.743,Reliable
+Age Group,70+,59064,545,0.7214,0.6964,0.7452,Reliable
+Ethnicity,Aboriginal,3156,30,0.7936,0.7002,0.8764,Reliable
+Ethnicity,British,83683,528,0.7218,0.6983,0.7454,Reliable
+Ethnicity,East_SE_Asian,86379,481,0.7353,0.7089,0.7594,Reliable
+Ethnicity,Eastern_European,20773,114,0.7055,0.6506,0.7552,Reliable
+Ethnicity,French,8628,50,0.7993,0.7263,0.8655,Reliable
+Ethnicity,Northern_European,7784,60,0.7553,0.6779,0.8166,Reliable
+Ethnicity,Other,20246,128,0.7042,0.65,0.7548,Reliable
+Ethnicity,South_Asian,14629,68,0.7499,0.6798,0.8195,Reliable
+Ethnicity,South_European,12113,66,0.7453,0.6806,0.8097,Reliable
+Ethnicity,Western_European,16171,96,0.7626,0.7075,0.8153,Reliable
+Family History,No,333596,1914,0.7342,0.7219,0.7465,Reliable
+Family History,Yes,88957,655,0.7158,0.6964,0.7353,Reliable
+Imaging Findings,No Mass,430519,1927,0.7285,0.7163,0.7407,Reliable
+Imaging Findings,Has Mass,8050,749,0.6844,0.6618,0.7076,Reliable
+Imaging Findings,No Architectural Distortion,434781,2125,0.7291,0.7172,0.7412,Reliable
+Imaging Findings,Has Architectural Distortion,3788,551,0.6937,0.6699,0.7183,Reliable
+Imaging Findings,No Asymmetry,414021,1672,0.7489,0.7354,0.7614,Reliable
+Imaging Findings,Has Asymmetry,24548,1004,0.6616,0.6437,0.6796,Reliable
+Imaging Findings,No Calcification,428010,1507,0.7048,0.6904,0.7189,Reliable
+Imaging Findings,Has Calcification,10559,1169,0.6187,0.6004,0.6372,Reliable

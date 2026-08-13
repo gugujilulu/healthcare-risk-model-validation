@@ -7,69 +7,126 @@ from scipy.special import expit
 from .cohort import add_screening_history, assign_patient_split, build_cumulative_endpoints
 
 
-def generate_synthetic_screening_data(n_patients: int = 12000, seed: int = 20260812) -> pd.DataFrame:
-    """Generate a synthetic longitudinal screening cohort.
+DENSITY_LEVELS = np.array(["A", "B", "C", "D"])
+DENSITY_EFFECT = {"A": -0.45, "B": -0.15, "C": 0.20, "D": 0.50}
+HORIZON_LOGIT_BIAS = {1: -0.18, 2: 0.10, 3: 0.12, 4: 0.03, 5: -0.08}
+HORIZON_NOISE_SD = {1: 0.09, 2: 0.14, 3: 0.21, 4: 0.29, 5: 0.38}
 
-    The data are illustrative only. They are designed to exercise the same
-    validation logic as the public reconstruction without reproducing any
-    private patient-level data or internal schema.
+
+def _local_signal_scale(calendar_year: int) -> float:
+    """Introduce a controlled calendar-time shift for the synthetic stress test.
+
+    The image-derived latent signal remains stable, while the association of
+    local structured variables with the event process weakens over later
+    calendar years. This creates a realistic demonstration in which random-
+    split adaptation can look stronger than future-period transportability.
+    """
+    if calendar_year <= 2014:
+        return 1.20
+    if calendar_year == 2015:
+        return 1.10
+    if calendar_year == 2016:
+        return 0.95
+    if calendar_year == 2017:
+        return 0.55
+    return 0.35
+
+
+def _observed_local_value(true_value, rng: np.random.Generator, screen_year: int, *, density: bool = False):
+    """Apply mild calendar-time missingness to public synthetic local fields."""
+    late_years = max(screen_year - 2015, 0)
+    missing_rate = min((0.015 if density else 0.025) + (0.05 if density else 0.08) * late_years, 0.30 if density else 0.34)
+    if rng.random() < missing_rate:
+        return None
+    return true_value
+
+
+def generate_synthetic_screening_data(n_patients: int = 12000, seed: int = 20260812) -> pd.DataFrame:
+    """Generate a public synthetic longitudinal screening cohort.
+
+    Design goals are structural rather than numerical replication of the
+    private study. The generator creates:
+
+    - 1--4 repeated exams per patient;
+    - cumulative 1--5 year outcomes with horizon-specific eligibility;
+    - a useful but imperfect fixed image-risk signal;
+    - local structured variables that add retrospective signal;
+    - calendar-time shift that can contract adaptation gains;
+    - a stronger, later-time post-screen triage signal; and
+    - administrative censoring with internally consistent time axes.
+
+    No private record, internal field mapping, or fitted private model object is
+    used to generate these data.
     """
     rng = np.random.default_rng(seed)
-    rows = []
-    density_levels = np.array(["A", "B", "C", "D"])
+    rows: list[dict] = []
 
     for pid in range(1, n_patients + 1):
-        base_age = np.clip(rng.normal(56, 8), 40, 74)
-        density = rng.choice(density_levels, p=[0.10, 0.39, 0.39, 0.12])
-        family = rng.choice(["no", "yes"], p=[0.82, 0.18])
-        biopsy = rng.choice(["no", "yes"], p=[0.88, 0.12])
-        start_year = int(rng.integers(2011, 2017))
-        n_exams = int(rng.integers(1, 5))
+        base_age = float(np.clip(rng.normal(56, 8), 40, 74))
+        true_density = str(rng.choice(DENSITY_LEVELS, p=[0.10, 0.39, 0.39, 0.12]))
+        true_family = str(rng.choice(["no", "yes"], p=[0.82, 0.18]))
+        true_biopsy = str(rng.choice(["no", "yes"], p=[0.88, 0.12]))
 
-        density_effect = {"A": -0.35, "B": -0.10, "C": 0.20, "D": 0.45}[density]
-        event_latent = (
-            -4.65
-            + 0.050 * (base_age - 55)
-            + 0.65 * density_effect
-            + 0.70 * (family == "yes")
-            + 0.55 * (biopsy == "yes")
-            + rng.normal(0, 0.45)
+        # Latent image signal is public-simulation-only. It is never written to
+        # the dataset; the public artifact exposes only horizon risk outputs.
+        image_signal = float(rng.normal())
+        start_year = int(
+            rng.choice(
+                np.arange(2011, 2018),
+                p=[0.10, 0.11, 0.13, 0.15, 0.17, 0.18, 0.16],
+            )
         )
-        annual_hazard = np.exp(event_latent)
-        # The fixed baseline score captures meaningful but incomplete signal.
-        # Local structured variables therefore have room to add information.
-        baseline_latent = (
-            -4.55
-            + 0.040 * (base_age - 55)
-            + 0.50 * density_effect
-            + 0.12 * (family == "yes")
-            + rng.normal(0, 0.28)
-        )
-        baseline_annual_hazard = np.exp(baseline_latent)
-        event_delay = rng.exponential(1 / annual_hazard)
-        has_event = event_delay < 10
-
+        n_exams = int(rng.choice([1, 2, 3, 4], p=[0.30, 0.34, 0.23, 0.13]))
         first_exam_date = pd.Timestamp(year=start_year, month=int(rng.integers(1, 13)), day=15)
-        latent_cancer_date = (
-            first_exam_date + pd.to_timedelta(event_delay * 365.25, unit="D")
-            if has_event
-            else pd.NaT
-        )
+
         admin_followup_end = pd.Timestamp("2021-12-31")
-        # Some patients have earlier last-known follow-up to create horizon-specific eligibility.
         if rng.random() < 0.18:
             admin_followup_end = min(
                 admin_followup_end,
                 first_exam_date + pd.to_timedelta(rng.uniform(2.0, 7.0) * 365.25, unit="D"),
             )
+
+        # Simulate a latent diagnosis time in quarterly intervals. Local
+        # structured-signal strength is intentionally weaker in later years,
+        # while the image signal remains stable, so temporal validation is a
+        # meaningful stress test rather than a second random split.
+        density_effect = DENSITY_EFFECT[true_density]
+        latent_cancer_date = pd.NaT
+        t = first_exam_date
+        max_latent_date = min(
+            first_exam_date + pd.to_timedelta(10.0 * 365.25, unit="D"),
+            pd.Timestamp("2023-12-31"),
+        )
+        while t < max_latent_date:
+            age_t = base_age + (t - first_exam_date).days / 365.25
+            scale = _local_signal_scale(t.year)
+            log_annual_hazard = (
+                -5.18
+                + 0.85 * image_signal
+                + scale
+                * (
+                    0.080 * (age_t - 55)
+                    + 1.05 * density_effect
+                    + 1.40 * (true_family == "yes")
+                    + 1.20 * (true_biopsy == "yes")
+                )
+            )
+            quarter_event_prob = 1 - np.exp(-np.exp(log_annual_hazard) * 0.25)
+            if rng.random() < quarter_event_prob:
+                latent_cancer_date = t + pd.to_timedelta(rng.uniform(0, 0.25) * 365.25, unit="D")
+                break
+            t += pd.to_timedelta(0.25 * 365.25, unit="D")
+
+        # Only an event observed before the last known follow-up date is exposed
+        # as cancer_date. Later latent events are administratively censored.
         observed_cancer_date = (
             latent_cancer_date
             if pd.notna(latent_cancer_date) and latent_cancer_date <= admin_followup_end
             else pd.NaT
         )
 
-        for j in range(n_exams):
-            exam_date = first_exam_date + pd.DateOffset(years=2 * j)
+        for exam_index in range(n_exams):
+            exam_date = first_exam_date + pd.DateOffset(years=2 * exam_index)
             if exam_date > pd.Timestamp("2019-12-31"):
                 break
             if exam_date > admin_followup_end:
@@ -77,22 +134,51 @@ def generate_synthetic_screening_data(n_patients: int = 12000, seed: int = 20260
             if pd.notna(observed_cancer_date) and exam_date >= observed_cancer_date:
                 break
 
-            age = base_age + 2 * j
-            annual_prob = 1 - np.exp(-baseline_annual_hazard)
-            mirai_noise = rng.normal(0, 0.26)
-            # Fixed image-model outputs: one probability per cumulative horizon.
-            risks = {}
+            age = base_age + 2 * exam_index
+            observed_density = _observed_local_value(true_density, rng, exam_date.year, density=True)
+            observed_family = _observed_local_value(true_family, rng, exam_date.year)
+            observed_biopsy = _observed_local_value(true_biopsy, rng, exam_date.year)
+
+            # Fixed image-model risk outputs: useful but incomplete signal.
+            # Horizon noise increases gradually to avoid an unrealistically
+            # identical discrimination profile at every cumulative horizon.
+            log_annual_baseline = (
+                -5.10
+                + 0.78 * image_signal
+                + 0.012 * (age - 55)
+                + 0.08 * density_effect
+                + rng.normal(0, 0.12)
+            )
+            annual_prob = 1 - np.exp(-np.exp(log_annual_baseline))
+            shared_noise = rng.normal(0, 0.07)
+            raw_risks = []
             for h in range(1, 6):
                 base_p = 1 - (1 - annual_prob) ** h
-                logit_p = np.log(np.clip(base_p, 1e-5, 1 - 1e-5) / np.clip(1 - base_p, 1e-5, 1))
-                risks[h] = expit(logit_p + mirai_noise + rng.normal(0, 0.10))
+                logit_p = np.log(np.clip(base_p, 1e-6, 1 - 1e-6) / np.clip(1 - base_p, 1e-6, 1))
+                raw_risks.append(
+                    float(
+                        expit(
+                            logit_p
+                            + HORIZON_LOGIT_BIAS[h]
+                            + shared_noise
+                            + rng.normal(0, HORIZON_NOISE_SD[h])
+                        )
+                    )
+                )
+            # Mirai-style cumulative risks should remain monotone by horizon.
+            monotone_risks = np.maximum.accumulate(np.asarray(raw_risks, dtype=float))
 
-            # Post-screen findings are intentionally later-time information and are isolated from the main model.
-            tte = ((latent_cancer_date - exam_date).days / 365.25) if pd.notna(latent_cancer_date) else np.inf
-            imminent = np.exp(-max(tte, 0) / 1.2) if np.isfinite(tte) else 0.0
-            finding_mass = rng.binomial(1, np.clip(0.04 + 0.65 * imminent, 0, 0.9))
-            finding_calc = rng.binomial(1, np.clip(0.05 + 0.40 * imminent, 0, 0.8))
-            finding_asymm = rng.binomial(1, np.clip(0.08 + 0.20 * imminent, 0, 0.6))
+            # Later-time findings are deliberately strong for imminent events.
+            # They are exposed only to the separate post-screen triage branch.
+            time_to_latent_event = (
+                (latent_cancer_date - exam_date).days / 365.25
+                if pd.notna(latent_cancer_date)
+                else np.inf
+            )
+            imminent = np.exp(-max(time_to_latent_event, 0) / 1.00) if np.isfinite(time_to_latent_event) else 0.0
+            finding_mass = rng.binomial(1, np.clip(0.020 + 0.90 * imminent, 0, 0.98))
+            finding_calc = rng.binomial(1, np.clip(0.035 + 0.72 * imminent, 0, 0.96))
+            finding_asymm = rng.binomial(1, np.clip(0.055 + 0.45 * imminent, 0, 0.86))
             result_score = finding_mass + finding_calc + finding_asymm
             result_category = "routine" if result_score == 0 else ("review" if result_score == 1 else "follow_up")
 
@@ -104,16 +190,16 @@ def generate_synthetic_screening_data(n_patients: int = 12000, seed: int = 20260
                 "cancer_date": observed_cancer_date,
                 "followup_end": admin_followup_end,
                 "age": float(age),
-                "density": density,
-                "family_history": family,
-                "prior_biopsy": biopsy,
-                "finding_mass": finding_mass,
-                "finding_calcification": finding_calc,
-                "finding_asymmetry": finding_asymm,
+                "density": observed_density,
+                "family_history": observed_family,
+                "prior_biopsy": observed_biopsy,
+                "finding_mass": int(finding_mass),
+                "finding_calcification": int(finding_calc),
+                "finding_asymmetry": int(finding_asymm),
                 "result_category": result_category,
             }
-            for h, p in risks.items():
-                row[f"mirai_risk_{h}yr"] = float(p)
+            for h, risk in enumerate(monotone_risks, start=1):
+                row[f"mirai_risk_{h}yr"] = float(risk)
             rows.append(row)
 
     df = pd.DataFrame(rows)

@@ -22,3 +22,16 @@ def test_patient_split_has_no_crossing_patients():
     out = assign_patient_split(df)
     assert_no_patient_leakage(out)
     assert out.groupby("patient_id")["split"].nunique().max() == 1
+
+
+def test_event_after_followup_is_censored():
+    df = pd.DataFrame({
+        "exam_date": pd.to_datetime(["2020-01-01"]),
+        "cancer_date": pd.to_datetime(["2022-01-01"]),
+        "followup_end": pd.to_datetime(["2020-09-01"]),
+    })
+    out = build_cumulative_endpoints(df, horizons=[1, 2])
+    assert out.loc[0, "eligible_1yr"] == 0
+    assert pd.isna(out.loc[0, "label_1yr"])
+    assert out.loc[0, "eligible_2yr"] == 0
+    assert pd.isna(out.loc[0, "label_2yr"])
